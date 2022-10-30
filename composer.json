@@ -1,0 +1,18 @@
+{
+    "name": "model/multitenancy",
+    "description": "Plugin for model/db to enable automatic multi tenancy",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Domenico Giambra",
+            "email": "zorinik@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Model\\MultiTenancy\\": "src/"}
+    },
+    "require": {
+        "model/config": "^0.6.1",
+        "model/db": "^0.5.9"
+    }
+}
