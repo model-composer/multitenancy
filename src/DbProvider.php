@@ -5,7 +5,17 @@ use Model\Db\DbConnection;
 
 class DbProvider extends AbstractDbProvider
 {
+	public static function alterDelete(DbConnection $db, string $table, array $where, array $options): array
+	{
+		return self::alter($db, $table, $where, $options);
+	}
+
 	public static function alterSelect(DbConnection $db, string $table, array $where, array $options): array
+	{
+		return self::alter($db, $table, $where, $options);
+	}
+
+	private static function alter(DbConnection $db, string $table, array $where, array $options): array
 	{
 		$config = MultiTenancy::getConfig();
 
