@@ -1,5 +1,6 @@
 <?php namespace Model\MultiTenancy;
 
+use Model\Config\Config;
 use Model\Db\AbstractDbProvider;
 use Model\Db\DbConnection;
 
@@ -17,7 +18,7 @@ class DbProvider extends AbstractDbProvider
 
 	private static function alter(DbConnection $db, string $table, array|int $where, array $options): array
 	{
-		$config = MultiTenancy::getConfig();
+		$config = Config::get('multitenancy');
 
 		if (isset($config['databases'][$db->getName()]) and $config['databases'][$db->getName()]['enabled']) {
 			$tableModel = $db->getTable($table);
