@@ -6,6 +6,17 @@ use Model\Db\DbConnection;
 
 class DbProvider extends AbstractDbProvider
 {
+	public static function alterInsert(DbConnection $db, array $queries): array
+	{
+		foreach ($queries as &$query) {
+			foreach ($query['data'] as &$row)
+				[$row, $options] = self::alter($db, $query['table'], $row, $query['options']);
+			unset($row);
+		}
+
+		return $queries;
+	}
+
 	public static function alterDelete(DbConnection $db, string $table, array|int $where, array $options): array
 	{
 		return self::alter($db, $table, $where, $options);
@@ -16,7 +27,7 @@ class DbProvider extends AbstractDbProvider
 		return self::alter($db, $table, $where, $options);
 	}
 
-	private static function alter(DbConnection $db, string $table, array|int $where, array $options): array
+	private static function alter(DbConnection $db, string $table, array|int $data, array $options): array
 	{
 		$config = Config::get('multitenancy');
 
@@ -28,10 +39,10 @@ class DbProvider extends AbstractDbProvider
 				and isset($tableModel->columns[$config['column']])
 				and !in_array($table, $config['ignore_tables'])
 			) {
-				$where[$config['column']] = MultiTenancy::getTenant();
+				$data[$config['column']] = MultiTenancy::getTenant();
 			}
 		}
 
-		return [$where, $options];
+		return [$data, $options];
 	}
 }
