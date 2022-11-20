@@ -1,4 +1,4 @@
-<?php namespace Model\MultiTenancy;
+<?php namespace Model\Multitenancy;
 
 class MultiTenancy
 {

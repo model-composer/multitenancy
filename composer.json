@@ -9,7 +9,7 @@
         }
     ],
     "autoload": {
-        "psr-4": {"Model\\MultiTenancy\\": "src/"}
+        "psr-4": {"Model\\Multitenancy\\": "src/"}
     },
     "require": {
         "model/config": "^0.7.0",
