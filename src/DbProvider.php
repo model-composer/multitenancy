@@ -40,6 +40,9 @@ class DbProvider extends AbstractDbProvider
 				and isset($tableModel->columns[$dbConfig['column']])
 				and !in_array($table, $dbConfig['ignore_tables'])
 			) {
+				if (is_int($data))
+					$data = [$tableModel->primary[0] => $data];
+
 				$data[$dbConfig['column']] = MultiTenancy::getTenant();
 			}
 		}
