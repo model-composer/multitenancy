@@ -43,7 +43,11 @@ class DbProvider extends AbstractDbProvider
 				if (is_int($data))
 					$data = [$tableModel->primary[0] => $data];
 
-				$data[$dbConfig['column']] = MultiTenancy::getTenant();
+				$tenantId = MultiTenancy::getTenant();
+				if ($tenantId)
+					$data[$dbConfig['column']] = $tenantId;
+				else
+					$data[$dbConfig['column']] = $tableModel->columns[$dbConfig['column']]['null'] ? null : 0;
 			}
 		}
 
