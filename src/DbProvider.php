@@ -22,6 +22,16 @@ class DbProvider extends AbstractDbProvider
 		return self::alter($db, $table, $where, $options);
 	}
 
+	public static function alterUpdate(DbConnection $db, array $queries): array
+	{
+		foreach ($queries as &$query) {
+			[$where, $options] = self::alter($db, $query['table'], $query['where'], $query['options']);
+			$query['where'] = $where;
+		}
+
+		return $queries;
+	}
+
 	public static function alterSelect(DbConnection $db, string $table, array|int $where, array $options): array
 	{
 		return self::alter($db, $table, $where, $options);
