@@ -5,6 +5,7 @@ use Model\Config\Config;
 class MultiTenancy
 {
 	private static ?int $tenant = null;
+	private static array $ignoredTables = [];
 
 	/**
 	 * @return int|null
@@ -23,6 +24,21 @@ class MultiTenancy
 	}
 
 	/**
+	 * Adds a table to ignore in runtime
+	 *
+	 * @param string $database
+	 * @param string $table
+	 * @return void
+	 */
+	public static function ignoreTable(string $database, string $table): void
+	{
+		if (!isset(self::$ignoredTables[$database]))
+			self::$ignoredTables[$database] = [];
+		if (!in_array($table, self::$ignoredTables[$database]))
+			self::$ignoredTables[$database][] = $table;
+	}
+
+	/**
 	 * @param string $database
 	 * @param string|null $table
 	 * @return string|null
@@ -34,7 +50,8 @@ class MultiTenancy
 		if (isset($config['databases'][$database]) and $config['databases'][$database]['enabled']) {
 			$dbConfig = $config['databases'][$database];
 
-			if ($table === null or !in_array($table, $dbConfig['ignore_tables']))
+			$ignoredTables = array_merge($dbConfig['ignore_tables'], self::$ignoredTables[$database] ?? []);
+			if ($table === null or !in_array($table, $ignoredTables))
 				return $dbConfig['column'];
 		}
 
