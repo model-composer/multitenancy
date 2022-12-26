@@ -38,17 +38,14 @@ class DbProvider extends AbstractDbProvider
 
 	private static function alter(DbConnection $db, string $table, array|int $data, array $options): array
 	{
+		$tenantColumn = MultiTenancy::getTenantColumn($db->getName(), $table);
 		$config = Config::get('multitenancy');
 
-		if (isset($config['databases'][$db->getName()]) and $config['databases'][$db->getName()]['enabled']) {
+		if ($tenantColumn) {
 			$dbConfig = $config['databases'][$db->getName()];
 			$tableModel = $db->getTable($table);
 
-			if (
-				!($options['skip_tenancy'] ?? false)
-				and isset($tableModel->columns[$dbConfig['column']])
-				and !in_array($table, $dbConfig['ignore_tables'])
-			) {
+			if (!($options['skip_tenancy'] ?? false) and isset($tableModel->columns[$dbConfig['column']])) {
 				if (is_int($data))
 					$data = [$tableModel->primary[0] => $data];
 
