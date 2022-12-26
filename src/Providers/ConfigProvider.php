@@ -1,4 +1,4 @@
-<?php namespace Model\Multitenancy;
+<?php namespace Model\Multitenancy\Providers;
 
 use Model\Config\AbstractConfigProvider;
 

@@ -1,8 +1,9 @@
-<?php namespace Model\Multitenancy;
+<?php namespace Model\Multitenancy\Providers;
 
 use Model\Config\Config;
 use Model\Db\AbstractDbProvider;
 use Model\Db\DbConnection;
+use Model\Multitenancy\MultiTenancy;
 
 class DbProvider extends AbstractDbProvider
 {
