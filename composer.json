@@ -13,6 +13,6 @@
     },
     "require": {
         "model/config": "^0.7.0",
-        "model/db": "^0.8.0"
+        "model/db": "^0.9.0"
     }
 }
